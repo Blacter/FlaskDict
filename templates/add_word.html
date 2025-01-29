@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<h1>{{page_title}}</h1>
+
+<form action="/add_word" method="POST" id="add_word_form">
+  <div class="main">
+    <div class="field">
+      <label for="eng_word_input">Английский перевод:</label>
+      <input type="text" id="eng_word_input" name="eng_word" value="" required>
+    </div>
+
+    <div class="field">
+      <label for="rus_word_input">Русский перевод:</label>
+      <input type="text" id="rus_word_input" name="rus_word" value="" required>
+    </div>
+
+    <div class="field">
+      <label for="word_description_input">Описание слова:</label>
+      <textarea id="word_description_input" name="word_description"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="word_examples_input">Примеры использования:</label>
+      <textarea id="word_examples_input" name="word_examples"></textarea>    
+    </div> 
+    <div class="inp-btn">
+      <input type="submit" value="Добавить слово"/>
+    </div>
+    {% for cat, msg in get_flashed_messages(True) %}
+      <div class="{{cat}}">{{msg}}</div>
+    {% endfor %}
+  </div>
+  
+</form>
+{% endblock main_content %}

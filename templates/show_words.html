@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<h1>{{page_title}}</h1>
+Страница: {{num_of_page}} из {{max_page_num}}.
+<form action="{{ url_for('show_words', num_of_page = num_of_page)}}" method="POST">
+  <table class="words_table">
+    <tr>
+      <th>#</th>
+      <th>Eng</th>
+      <th>Rus</th>      
+    </tr>
+    {% for word in words %}
+    <tr>
+      <td>{{word['word_number'] + 1}}</td>
+      <td>{{word['eng_word']}}</td>
+      <td>{{word['rus_word']}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</form>
+<!-- Числа для перехода между с траницами-->
+{% if max_page_num > 1 %}
+{% for page_num in num_pages_list %}
+  {% if page_num != '...' and page_num != num_of_page %}
+    <a href="{{ url_for('show_words', num_of_page = page_num)}}">{{ page_num }}</a>
+  {% elif page_num != '...' and page_num == num_of_page  %}
+    <a href="{{ url_for('show_words', num_of_page = page_num)}}" class="cur_page_list">{{ page_num }}</a>
+  {% else %}
+    ...
+  {% endif %}
+  {% if page_num == '...' or page_num < max_page_num %}
+  ,
+  {% else %}
+  .
+  {% endif %}
+{% endfor %}
+{% endif %}
+<br>
+<!-- Кнопки перехода между страницами -->
+{% if num_of_page-1 >= 1 %}
+<a href="{{url_for('show_words', num_of_page = num_of_page-1)}}">
+  <input type="button" value="Prev"/></a>
+{% elif max_page_num >= 2 %}
+  <input type="button" value="Prev" disabled/>
+{% endif %}
+<!-- Добавить проверку, что следующая страница существует! -->
+{% if num_of_page + 1 <= max_page_num %}
+<a href="{{url_for('show_words', num_of_page = num_of_page+1)}}">
+  <input type="button" value="Next"/>
+</a>
+{% elif max_page_num >= 2%}
+  <input type="button" value="Next" disabled/>
+{% endif %}
+
+<!-- Переход к странице по номеру. -->
+<form action="{{ url_for('show_words', num_of_page = num_of_page)}}" method="POST">
+  <label for="num_of_page_show_words">Введите номер страницы:</label>
+  <input type="text" id="num_of_page_show_words" name="num_of_page">
+  <input type="submit" name="num_of_page_btn" value="Go">
+</form>
+{% for cat, msg in get_flashed_messages(True) %}
+  <div class="{{cat}}">{{msg}}</div>
+{% endfor %}
+{% endblock main_content %}

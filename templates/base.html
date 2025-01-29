@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+  <script src="{{url_for('static', filename='js/script.js')}}"></script>
+  <title>{{page_title}}</title>
+</head>
+<body>
+
+{% block main_menu %}
+<div class="main_menu">
+{% for link, menu_option in pages_names.items() -%}
+  {% if link != current_page_url and link != '/show_menu' %}
+  <div><a href="{{link}}">{{menu_option}}</a></div>
+  {% elif link != current_page_url and link != '/show_menu' %}
+  <div><a href="{{link}}/{{current_words_page}}">{{menu_option}}</a></div>
+  {% else %}
+  <div>{{menu_option}}</div>
+  {% endif %}
+{% endfor %}
+</div>
+{% endblock main_menu %}
+
+{% block main_content %}
+{% endblock main_content %}
+  
+</body>
+</html>

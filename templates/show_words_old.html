@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<h1>{{page_title}}</h1>
+Страница: {#{num_of_page}#} из {#{max_page_num}#}.
+
+<form action="{{ url_for('show_words', num_of_page = num_of_page)}}" method="POST">
+<!-- <input type="submit" class="control_btn" name="paint_words_red" value="Раскрасить слова в красный"/> -->
+<!-- <input type="submit" class="control_btn" name="show_selected_words" value="Показать выделенные слова"/> -->
+<!-- <input type="submit" class="control_btn" name="hide_selected_words" value="Скрыть выделенные слова"/> -->
+  {#% if not is_hide_eng %#}
+  <input type="submit" name="hide_all_eng_words" value="Скрыть слова на английском"/>
+  {#% else %#}
+  <input type="submit" name="show_all_eng_words" value="Показать все слова на английском"/>
+  {#% endif %#}
+  {#% if not is_hide_rus %#}
+  <input type="submit" name="hide_all_rus_words" value="Скрыть слова на русском"/>
+  {#% else %#}
+  <input type="submit" name="show_all_rus_words" value="Показать все слова на русском"/>
+  {#% endif %#}
+<table class="words_table">
+  <tr>
+    <th>#</th>
+    <th>
+      Eng
+      <input type="submit" class="control_btn" name="show_selected_words_eng" value="Показать выделенные"/>
+      <input type="submit" class="control_btn" name="hide_selected_words_eng" value="Скрыть выделенные"/>
+    </th>
+    <th>
+      Rus
+      <input type="submit" class="control_btn" name="show_selected_words_rus" value="Показать выделенные"/>
+      <input type="submit" class="control_btn" name="hide_selected_words_rus" value="Скрыть выделенные"/>
+    </th>
+    <th>Select</th>
+  </tr>
+{% for word_data in words %}
+  <tr>
+    <td>{{ word_data['id'] + 1 }}</td>
+    <td>
+    {% if not word_data['is_hide_eng'] %}
+      {{ word_data['eng_word'] }}
+    {% else %}
+      <input type="submit" name="reveal_one_word_eng_{#{ word_data['id'] }#}" value="Показать слово"/>
+      <input type="hidden" name="hidden_id_eng_{#{ word_data['id'] }#}" value="{#{ word_data['id'] }#}">
+    {% endif %}
+    </td>
+    <td>
+    {% if not word_data['is_hide_rus'] %}
+      {{ word_data['rus_word'] }}
+    {% else %}
+    <input type="submit" name="reveal_one_word_rus_{#{ word_data['id'] }#}" value="Показать слово">
+    <input type="hidden" name="hidden_id_rus_{#{ word_data['id']}#}" value="{#{ word_data['id'] }#}"/>
+    {% endif %}
+    </td>
+    <td class="select_cell">
+      <input type="checkbox" class="select_word" name="select_id_{#{ word_data['id'] }#}" value="{#{ word_data['id'] }#}"/>
+    </td>
+  </tr>
+{% endfor %}
+</table>
+</form>
+
+{% if max_page_num > 1 %}
+{% for page_num in num_pages_list %}
+  {% if page_num != '...' and page_num != num_of_page %}
+    <a href="{{ url_for('show_words', num_of_page = page_num)}}">{{ page_num }}</a>
+  {% elif page_num != '...' and page_num == num_of_page  %}
+    <a href="{{ url_for('show_words', num_of_page = page_num)}}" class="cur_page_list">{{ page_num }}</a>
+  {% else %}
+    ...
+  {% endif %}
+  {% if page_num == '...' or page_num < max_page_num %}
+  ,
+  {% else %}
+  .
+  {% endif %}
+{% endfor %}
+{% endif %}
+</br>
+{% if num_of_page-1 >= 1 %}
+<a href="{{url_for('show_words', num_of_page = num_of_page-1)}}">
+  <input type="button" value="Prev"/></a>
+{% elif max_page_num >= 2 %}
+  <input type="button" value="Prev" disabled/>
+{% endif %}
+
+
+<!-- Добавить проверку, что следующая страница существует! -->
+{% if num_of_page + 1 <= max_page_num %}
+<a href="{{url_for('show_words', num_of_page = num_of_page+1)}}">
+  <input type="button" value="Next"/>
+</a>
+{% elif max_page_num >= 2%}
+  <input type="button" value="Next" disabled/>
+{% endif %}
+
+<!-- Переход к странице по номеру. -->
+<form action="{{ url_for('show_words', num_of_page = 1)}}" method="POST">
+  <label for="num_of_page_show_words">Введите номер страницы:</label>
+  <input type="text" id="num_of_page_show_words" name="num_of_page">
+  <input type="submit" name="num_of_page_btn" value="Go">
+</form>
+{% for cat, msg in get_flashed_messages(True) %}
+  <div class="{{ cat }}">{{ msg }}</div>
+{% endfor %}
+
+<form action="{{ url_for('show_words', num_of_page = num_of_page)}}" method="POST">
+  <div class="inp-btn-half">
+    {% if not is_hide_eng %}
+    <input type="submit" name="hide_all_eng_words" value="Скрыть слова на английском"/>
+    {% else %}
+    <input type="submit" name="show_all_eng_words" value="Показать все слова на английском"/>
+    {% endif %}
+    {% if not is_hide_rus %}
+    <input type="submit" name="hide_all_rus_words" value="Скрыть слова на русском"/>
+    {% else %}
+    <input type="submit" name="show_all_rus_words" value="Показать все слова на русском"/>
+    {% endif %}
+  </div>
+</form>
+{% endblock main_content %}

@@ -1,0 +1,78 @@
+/* Главное Меню */
+.main_menu div{
+  background-color: #342F8E;
+  color: #B3D7F0;
+  text-align: center;
+  font-size: 18pt;
+}
+
+.main_menu div:hover{  
+  background-color: #5AE2AF;
+  color: #0F28BD;
+}
+
+.main_menu a{
+  color: inherit;
+  text-decoration: none;
+
+  display: inline-block;
+  width: 100%;
+}
+/* Конец - Главное Меню. */ 
+
+/* Формы работы со словарем: добавление, изменение, удаление слова. */
+.field {clear:both; text-align:right; line-height:25px;}
+label {float: left}
+.main {float: left}
+
+.field input, .field textarea {
+  width: 250px;
+}
+.inp-btn input{
+  width: 100%;
+}
+
+.inp-btn-half{
+  display: flex;
+  justify-content: space-between;
+}
+
+.inp-btn-half input{
+  width: 49%;
+  text-align: center;
+}
+
+/* Конец - формы работы со словарем. */
+
+/* Таблица слов пользователя*/
+table, th, td{
+  border: 1px solid;
+  border-collapse: collapse;
+}
+.words_table{
+  font-size: 14pt;
+}
+.words_table tr:hover{
+  background-color: gainsboro;
+}
+/* Конец Таблица слов пользователя*/
+
+/* Cписок чисел для перехода между страницами словаря. */
+.cur_page_list {
+  color: green;
+}
+/* Для категорий flash сообщений. */
+.success {
+  background-color: aquamarine;
+  color: blue;
+  text-align: center;
+
+  font-size: 14pt;
+}
+.error {
+  background-color: red;
+  color:white;
+  text-align: center;
+
+  font-size: 14pt;
+}

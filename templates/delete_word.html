@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<h1>{{page_title}}</h1>
+
+{% if is_choose_id_state %}
+<form action="/delete_word" method="POST">
+  <div class="main">
+    <div class="field">
+      <label for="word_id_del_word">Введите номер удаляемого слова:</label>
+      <input type="text" id="word_id_del_word" name="word_number"  required />
+    </div>
+    <div class="inp-btn">
+      <input type="submit" value="Получить данные о слове" name="get_word_info_btn" />
+    </div>
+    {% for cat, msg in get_flashed_messages(True) %}
+      <div class="{{cat}}">{{msg}}</div>
+    {% endfor %}
+  </div>
+</form>
+{% else %}
+Слово для удаления:
+<form action="/delete_word" method="POST">
+  <div class="main">
+    <div class="field">
+      <label for="word_id_del_word">Номер слова:</label>
+      <input type="text" id="word_id_del_word" name="word_number" value="{{ word_data['word_number'] + 1 }}" readonly>
+    </div>    
+    <div class="field">
+      <label for="eng_word_del_word">Английский перевод:</label>
+      <input type="text" id="eng_word_del_word" name="eng_word" value="{{ word_data['eng_word'] }}">
+    </div>    
+    <div class="field">
+      <label for="rus_word_del_word">Русский перевод:</label>
+      <input type="text" id="rus_word_del_word" name="rus_word" value="{{ word_data['rus_word'] }}">
+    </div>    
+    <div class="field">
+      <label for="word_description_del_word">Описание слова:</label>
+      <input type="text" id="word_description_del_word" name="word_description" value="{{ word_data['word_description'] }}">
+    </div>    
+    <div class="field">
+      <label for="word_examples_del_word">Примеры использования:</label>
+      <input type="text" id="word_examples_del_word" name="word_examples" value="{{ word_data['word_examples'] }}">
+    </div>
+    <div class="inp-btn-half">
+      <input type="submit" name="confirm_del_btn" value="Удалить"/>
+      <input type="submit" name="cancel_del_btn" value="Отмена"/>
+    </div>
+  </div>
+</form>
+{% endif %}
+{% endblock main_content %}
